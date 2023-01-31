@@ -15,7 +15,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float projectileAliveTime = 0.5f;
 
     private Camera cam;
-    private bool isAttacking = false;
 
     private void Awake()
     {
@@ -36,7 +35,7 @@ public class Weapon : MonoBehaviour
         shootPosition.rotation = Quaternion.Euler(0, 0, angle);
 
         GameObject projectile = Instantiate(projectilePrefab, shootPositionVector, shootPosition.rotation);
-        projectile.GetComponent<Projectile>().Setup(lookDirection, projectileSpeed, projectileAliveTime);
+        projectile.GetComponent<Projectile>().Setup(lookDirection, projectileSpeed, projectileAliveTime, attackDamage);
 
     }
 

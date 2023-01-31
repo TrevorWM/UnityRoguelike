@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4126635220708915982}
   - component: {fileID: 1812622885979544142}
   m_Layer: 0
-  m_Name: SwordSlash
+  m_Name: pfSwordSlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

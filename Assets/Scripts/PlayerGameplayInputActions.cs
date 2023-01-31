@@ -1,28 +1,20 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
 public class PlayerGameplayInputActions : MonoBehaviour
 {
-    [Header("Movement Values")]
-    [SerializeField] private float moveSpeed = 5.0f;
-
-    [Header("Dodge Values")]
-    [SerializeField] private float dodgeForce = 1.05f;
-    [SerializeField] private float dodgeTime = 0.3f;
-
-    [Header("Weapon Equipped")]
-    [SerializeField] private GameObject weapon;
-
+    private Player player;
 
     private Rigidbody2D playerRigidbody;
     private Animator playerAnimator;
-    private bool isRunning = false;
     private bool isDodging = false;
     private Vector2 inputVector;
+    
+    private float moveSpeed;
+    private float dodgeForce;
+    private float dodgeTime;
 
     public event EventHandler OnAttackStart;
     public event EventHandler OnAttackEnd;
@@ -30,6 +22,11 @@ public class PlayerGameplayInputActions : MonoBehaviour
 
     private void Start()
     {
+        player = GetComponent<Player>();
+        moveSpeed = player.moveSpeed;
+        dodgeForce = player.dodgeForce;
+        dodgeTime = player.dodgeTime;
+
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
     }
@@ -46,7 +43,7 @@ public class PlayerGameplayInputActions : MonoBehaviour
         {
             playerRigidbody.velocity = inputVector * moveSpeed;
             HandleMoveAnimation(context);
-            //OnMove?.Invoke(this, EventArgs.Empty);
+            OnMove?.Invoke(this, EventArgs.Empty);
         }
 
 
@@ -110,9 +107,7 @@ public class PlayerGameplayInputActions : MonoBehaviour
         } else if (context.canceled)
         {
             OnAttackEnd?.Invoke(this, EventArgs.Empty);
-        }
-        
-           
+        }  
     }
 
     //------------------------------------------------------------------------------------
