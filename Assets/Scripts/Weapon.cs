@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IWeapon
 {
     [Header("Weapon Properties")]
     [SerializeField] GameObject projectilePrefab;
@@ -15,13 +15,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float projectileAliveTime = 0.5f;
 
     private Camera cam;
-
-    private void Awake()
-    {
-        PlayerGameplayInputActions playerInput = GetComponentInParent<PlayerGameplayInputActions>();
-        playerInput.OnAttackStart += WeaponAttackStart;
-        playerInput.OnAttackEnd += WeaponAttackEnd;
-    }
 
     private void FireProjectile()
     {
@@ -39,7 +32,7 @@ public class Weapon : MonoBehaviour
 
     }
 
-    private void WeaponAttackStart(object sender, EventArgs e)
+    public void StartAttacking()
     {
             StartCoroutine("Attack");
     }
@@ -55,7 +48,7 @@ public class Weapon : MonoBehaviour
 
     }
 
-    private void WeaponAttackEnd(object sender, EventArgs e)
+    public void StopAttacking()
     {
         StopCoroutine("Attack");
     }
