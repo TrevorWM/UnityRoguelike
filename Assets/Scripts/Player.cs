@@ -8,23 +8,17 @@ public class Player : MonoBehaviour
     
     private GameplayInput gameplayInput;
 
-    [SerializeField] private StatsSO playerStats;
+    
     [SerializeField] private Weapon weaponScript;
-
-    [Header("Health")]
-    [SerializeField] public float maxHealth = 10f;
-    [SerializeField] private float currentHealth = 10f;
-
-    [Header("Movement Values")]
-    [SerializeField] public float moveSpeed = 5.0f;
-
-    [Header("Dodge Values")]
-    [SerializeField] public float dodgeForce = 1.05f;
-    [SerializeField] public float dodgeTime = 0.3f;
+    [SerializeField] private PlayerStats playerStats;
+    
+    
 
     private Rigidbody2D playerRigidbody;
     private bool isDodging = false;
     private Vector2 inputVector = Vector2.zero;
+
+    
 
     private void Start()
     {
@@ -58,7 +52,7 @@ public class Player : MonoBehaviour
     {
         if (!isDodging)
         {
-            playerRigidbody.velocity = inputVector * moveSpeed;
+            playerRigidbody.velocity = inputVector * playerStats.MoveSpeed;
         }
         
     }
@@ -82,14 +76,14 @@ public class Player : MonoBehaviour
         {
             isDodging = true;
             StartCoroutine("DodgeCooldown");
-            playerRigidbody.AddForce(playerRigidbody.velocity * dodgeForce, ForceMode2D.Impulse);
+            playerRigidbody.AddForce(playerRigidbody.velocity * playerStats.DodgeForce , ForceMode2D.Impulse);
         }
     }
 
     IEnumerator DodgeCooldown()
     {
-        yield return new WaitForSeconds(dodgeTime);
-        playerRigidbody.velocity = inputVector * moveSpeed;
+        yield return new WaitForSeconds(playerStats.DodgeTime);
+        playerRigidbody.velocity = inputVector * playerStats.MoveSpeed;
         isDodging = false;
 
     }
@@ -102,12 +96,6 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
-        Debug.Log("Took damage. Current health: " + currentHealth);
-
-        if (currentHealth < 0)
-        {
-            Destroy(gameObject);
-        }
+        playerStats.CurrentHealth -= damage;
     }
 }

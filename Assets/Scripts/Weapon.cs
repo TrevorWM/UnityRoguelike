@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour, IWeapon
 
     private Camera cam;
 
-    private void FireProjectile()
+    private void Attack()
     {
         cam = Camera.main;
 
@@ -34,15 +34,15 @@ public class Weapon : MonoBehaviour, IWeapon
 
     public void StartAttacking()
     {
-            StartCoroutine("Attack");
+            StartCoroutine("AttackTimer");
     }
 
 
-    IEnumerator Attack()
+    IEnumerator AttackTimer()
     {
         while (true)
         {
-            FireProjectile();
+            Attack();
             yield return new WaitForSeconds(1 / attacksPerSecond);
         }
 
@@ -50,7 +50,7 @@ public class Weapon : MonoBehaviour, IWeapon
 
     public void StopAttacking()
     {
-        StopCoroutine("Attack");
+        StopCoroutine("AttackTimer");
     }
 }
 
