@@ -8,27 +8,29 @@ public class Player : MonoBehaviour
     
     private GameplayInput gameplayInput;
 
-    
     [SerializeField] private Weapon weaponScript;
     [SerializeField] private PlayerStats playerStats;
     
-    
-
     private Rigidbody2D playerRigidbody;
     private bool isDodging = false;
     private Vector2 inputVector = Vector2.zero;
 
-    
 
     private void Start()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
         gameplayInput = GetComponent<GameplayInput>();
 
-
         gameplayInput.OnDodgeAction += GameplayInput_OnDodgeAction;
         gameplayInput.OnAttackStart += GameplayInput_OnAttackStart;
         gameplayInput.OnAttackEnd += GameplayInput_OnAttackEnd;
+    }
+
+    private void OnDestroy()
+    {
+        gameplayInput.OnDodgeAction -= GameplayInput_OnDodgeAction;
+        gameplayInput.OnAttackStart -= GameplayInput_OnAttackStart;
+        gameplayInput.OnAttackEnd -= GameplayInput_OnAttackEnd;
     }
 
     private void GameplayInput_OnAttackEnd(object sender, System.EventArgs e)
@@ -39,6 +41,16 @@ public class Player : MonoBehaviour
     private void GameplayInput_OnAttackStart(object sender, System.EventArgs e)
     {
         weaponScript.StopAttacking();
+    }
+
+    private void GameplayInput_OnDodgeAction(object sender, System.EventArgs e)
+    {
+        if (!isDodging)
+        {
+            isDodging = true;
+            StartCoroutine("DodgeCooldown");
+            playerRigidbody.AddForce(playerRigidbody.velocity * playerStats.DodgeForce, ForceMode2D.Impulse);
+        }
     }
 
     private void Update()
@@ -67,16 +79,6 @@ public class Player : MonoBehaviour
         else if (playerRigidbody.velocity.x < 0)
         {
             playerRigidbody.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-        }
-    }
-
-    private void GameplayInput_OnDodgeAction(object sender, System.EventArgs e)
-    {
-        if (!isDodging)
-        {
-            isDodging = true;
-            StartCoroutine("DodgeCooldown");
-            playerRigidbody.AddForce(playerRigidbody.velocity * playerStats.DodgeForce , ForceMode2D.Impulse);
         }
     }
 
