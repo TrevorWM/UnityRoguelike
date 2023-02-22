@@ -5,7 +5,7 @@ using UnityEngine;
 public class RelicManager : MonoBehaviour
 {
     [SerializeField] private CharacterStatsSO baseStats;
-    [SerializeField] private  currentStats;
+    [SerializeField] private Stats currentStats;
 
     private Dictionary<Relic, int> currentRelics = new Dictionary<Relic, int>();
 
