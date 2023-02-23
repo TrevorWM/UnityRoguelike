@@ -1,16 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class DodgeForceRelic : Relic 
 {
+    private const string NAME = "Dodge Force Relic";
+    private const float BUFF_AMOUNT = 1.05f;
     public DodgeForceRelic()
     {
-        this.RelicName = "Dodge Force Relic";
+        this.RelicName = NAME;
     }
-    public override void ApplyRelicEffect(GameObject target, int stacks)
+
+    public override void ApplyRelicEffect(Stats targetStats, int stacks)
     {
-        Debug.LogFormat("Applying {0} stacks of {1} to {2}", stacks, RelicName, target);
+        CharacterBaseSO baseStats = targetStats.BaseStats;
+
+        if (targetStats != null)
+        {
+            Debug.LogFormat("Adding effects of {1} stacks to {0}", targetStats, stacks);
+            targetStats.DodgeForce = baseStats.DodgeForce * (Mathf.Pow(BUFF_AMOUNT, stacks));
+        }
     }
 }

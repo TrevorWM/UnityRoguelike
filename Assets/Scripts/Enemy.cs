@@ -35,11 +35,11 @@ public class Enemy : MonoBehaviour, IDamagable {
 
     private bool IsDead()
     {
-        return currentHealth < 0;
+        return currentHealth < 1;
     }
 
     private void DestroyIfDead()
     {
-        if (IsDead()) { Destroy(gameObject); }
+        if (IsDead()) Destroy(gameObject); 
     }
 }

@@ -5,11 +5,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    
+    private IAbility mainAttack;
     private GameplayInput gameplayInput;
-
-    [SerializeField] private Weapon weaponScript;
-    [SerializeField] private PlayerStats playerStats;
+    private Stats playerStats;
     
     private Rigidbody2D playerRigidbody;
     private bool isDodging = false;
@@ -19,31 +17,35 @@ public class Player : MonoBehaviour
     private void Start()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
+        playerStats = GetComponent<Stats>();
         gameplayInput = GetComponent<GameplayInput>();
+        mainAttack = GetComponent<IAbility>();
 
-        gameplayInput.OnDodgeAction += GameplayInput_OnDodgeAction;
-        gameplayInput.OnAttackStart += GameplayInput_OnAttackStart;
-        gameplayInput.OnAttackEnd += GameplayInput_OnAttackEnd;
+        GameplayInput.OnDodgeAction += GameplayInput_OnDodgeAction;
+        GameplayInput.OnAttackStart += GameplayInput_OnAttackStart;
+        GameplayInput.OnAttackEnd += GameplayInput_OnAttackEnd;
     }
+
+ 
 
     private void OnDestroy()
     {
-        gameplayInput.OnDodgeAction -= GameplayInput_OnDodgeAction;
-        gameplayInput.OnAttackStart -= GameplayInput_OnAttackStart;
-        gameplayInput.OnAttackEnd -= GameplayInput_OnAttackEnd;
+        GameplayInput.OnDodgeAction -= GameplayInput_OnDodgeAction;
+        GameplayInput.OnAttackStart-= GameplayInput_OnAttackStart;
+        GameplayInput.OnAttackEnd -= GameplayInput_OnAttackEnd;
     }
 
-    private void GameplayInput_OnAttackEnd(object sender, System.EventArgs e)
+    private void GameplayInput_OnAttackEnd()
     {
-        weaponScript.StartAttacking();
+        mainAttack.StopAbility();
     }
 
-    private void GameplayInput_OnAttackStart(object sender, System.EventArgs e)
+    private void GameplayInput_OnAttackStart()
     {
-        weaponScript.StopAttacking();
+        mainAttack.StartAbility(playerStats);
     }
 
-    private void GameplayInput_OnDodgeAction(object sender, System.EventArgs e)
+    private void GameplayInput_OnDodgeAction()
     {
         if (!isDodging)
         {
@@ -89,7 +91,6 @@ public class Player : MonoBehaviour
         isDodging = false;
 
     }
-
 
     public bool IsRunning()
     {

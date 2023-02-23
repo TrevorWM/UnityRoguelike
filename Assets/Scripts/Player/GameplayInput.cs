@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class GameplayInput : MonoBehaviour
 {
-    public event EventHandler OnDodgeAction;
-    public event EventHandler OnAttackStart;
-    public event EventHandler OnAttackEnd;
+    public static event Action OnDodgeAction;
+    public static event Action OnAttackStart;
+    public static event Action OnAttackEnd;
 
     private PlayerInputActions playerInputActions;
 
@@ -23,17 +23,17 @@ public class GameplayInput : MonoBehaviour
 
     private void Attack_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnAttackStart?.Invoke(this, EventArgs.Empty);
+        OnAttackEnd?.Invoke();
     }
 
     private void Attack_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnAttackEnd?.Invoke(this, EventArgs.Empty);
+        OnAttackStart?.Invoke();
     }
 
     private void Dodge_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnDodgeAction?.Invoke(this, EventArgs.Empty);
+        OnDodgeAction?.Invoke();
     }
 
     public Vector2 GetMovementVectorNormalized()

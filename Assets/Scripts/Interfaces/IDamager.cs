@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamager
 {
-    void DealDamageTo(IDamagable projectile);
+    void DealDamageTo(IDamagable target);
 }
