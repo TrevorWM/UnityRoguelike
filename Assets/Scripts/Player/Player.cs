@@ -5,40 +5,54 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    
+    private IAbility mainAttack;
     private GameplayInput gameplayInput;
-
+    private Stats playerStats;
     
-    [SerializeField] private Weapon weaponScript;
-    [SerializeField] private PlayerStats playerStats;
-    
-    
-
     private Rigidbody2D playerRigidbody;
     private bool isDodging = false;
     private Vector2 inputVector = Vector2.zero;
 
-    
 
     private void Start()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
+        playerStats = GetComponent<Stats>();
         gameplayInput = GetComponent<GameplayInput>();
+        mainAttack = GetComponent<IAbility>();
 
-
-        gameplayInput.OnDodgeAction += GameplayInput_OnDodgeAction;
-        gameplayInput.OnAttackStart += GameplayInput_OnAttackStart;
-        gameplayInput.OnAttackEnd += GameplayInput_OnAttackEnd;
+        GameplayInput.OnDodgeAction += GameplayInput_OnDodgeAction;
+        GameplayInput.OnAttackStart += GameplayInput_OnAttackStart;
+        GameplayInput.OnAttackEnd += GameplayInput_OnAttackEnd;
     }
 
-    private void GameplayInput_OnAttackEnd(object sender, System.EventArgs e)
+ 
+
+    private void OnDestroy()
     {
-        weaponScript.StartAttacking();
+        GameplayInput.OnDodgeAction -= GameplayInput_OnDodgeAction;
+        GameplayInput.OnAttackStart-= GameplayInput_OnAttackStart;
+        GameplayInput.OnAttackEnd -= GameplayInput_OnAttackEnd;
     }
 
-    private void GameplayInput_OnAttackStart(object sender, System.EventArgs e)
+    private void GameplayInput_OnAttackEnd()
     {
-        weaponScript.StopAttacking();
+        mainAttack.StopAbility();
+    }
+
+    private void GameplayInput_OnAttackStart()
+    {
+        mainAttack.StartAbility(playerStats);
+    }
+
+    private void GameplayInput_OnDodgeAction()
+    {
+        if (!isDodging)
+        {
+            isDodging = true;
+            StartCoroutine("DodgeCooldown");
+            playerRigidbody.AddForce(playerRigidbody.velocity * playerStats.DodgeForce, ForceMode2D.Impulse);
+        }
     }
 
     private void Update()
@@ -70,16 +84,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void GameplayInput_OnDodgeAction(object sender, System.EventArgs e)
-    {
-        if (!isDodging)
-        {
-            isDodging = true;
-            StartCoroutine("DodgeCooldown");
-            playerRigidbody.AddForce(playerRigidbody.velocity * playerStats.DodgeForce , ForceMode2D.Impulse);
-        }
-    }
-
     IEnumerator DodgeCooldown()
     {
         yield return new WaitForSeconds(playerStats.DodgeTime);
@@ -87,7 +91,6 @@ public class Player : MonoBehaviour
         isDodging = false;
 
     }
-
 
     public bool IsRunning()
     {

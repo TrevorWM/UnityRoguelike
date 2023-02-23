@@ -4,18 +4,24 @@ using System.Collections.Generic;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour, IWeapon
+public class KnightSword : Ability
 {
-    [Header("Weapon Properties")]
+    [Header("Ability Properties")]
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform shootPosition;
-    [SerializeField] private float attacksPerSecond = 1.0f;
-    [SerializeField] private float attackDamage = 1.0f;
-    [SerializeField] private float projectileSpeed = 10.0f;
-    [SerializeField] private float projectileAliveTime = 0.5f;
+    private Stats entityStats;
 
     private Camera cam;
 
+    public override void StartAbility(Stats entityStats)
+    {
+        this.entityStats = entityStats;
+        StartCoroutine("AttackTimer");
+    }
+    public override void StopAbility()
+    {
+        StopCoroutine("AttackTimer");
+    }
     private void Attack()
     {
         cam = Camera.main;
@@ -28,29 +34,17 @@ public class Weapon : MonoBehaviour, IWeapon
         shootPosition.rotation = Quaternion.Euler(0, 0, angle);
 
         GameObject projectile = Instantiate(projectilePrefab, shootPositionVector, shootPosition.rotation);
-        projectile.GetComponent<Projectile>().Setup(lookDirection, projectileSpeed, projectileAliveTime, attackDamage);
+        projectile.GetComponent<Projectile>().Setup(lookDirection, entityStats.ProjectileSpeed, entityStats.AttackRange, entityStats.AttackDamage);
 
     }
-
-    public void StartAttacking()
-    {
-            StartCoroutine("AttackTimer");
-    }
-
-
     IEnumerator AttackTimer()
     {
         while (true)
         {
             Attack();
-            yield return new WaitForSeconds(1 / attacksPerSecond);
+            yield return new WaitForSeconds(1 / entityStats.AttacksPerSecond);
         }
 
-    }
-
-    public void StopAttacking()
-    {
-        StopCoroutine("AttackTimer");
     }
 }
 

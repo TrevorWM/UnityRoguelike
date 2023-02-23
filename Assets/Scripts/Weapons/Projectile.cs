@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IDamager
 {
     private Vector3 shootDirection;
     private float projectileSpeed;
@@ -23,12 +24,17 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Enemy enemy = collision.GetComponent<Enemy>();
+        IDamagable enemy = collision.GetComponent<IDamagable>();
 
         if (enemy != null)
         {
-            enemy.TakeDamage(damage);
+            DealDamageTo(enemy);
             Destroy(gameObject);
         } 
+    }
+
+    public void DealDamageTo(IDamagable target)
+    {
+        target.TakeDamage(damage);
     }
 }

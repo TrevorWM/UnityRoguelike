@@ -1,9 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
-{
+public class Enemy : MonoBehaviour, IDamagable {
     [Header("Health")]
     [SerializeField] public float maxHealth = 10f;
     [SerializeField] private float currentHealth = 10f;
@@ -11,14 +11,35 @@ public class Enemy : MonoBehaviour
     [Header("Movement Values")]
     [SerializeField] public float moveSpeed = 5.0f;
 
+
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        Debug.Log("Took damage. Current health: " + currentHealth);
+        Debug.LogFormat("Took {0} damage", damage);
+        DestroyIfDead();
+    }
 
-        if (currentHealth < 0)
+    public void TakeDamageOverSeconds(float damage, float seconds)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private IEnumerator DamageOverSeconds(float damage, float seconds)
+    {
+        for (int i = 0; i < seconds; i++)
         {
-            Destroy(gameObject);
+            yield return new WaitForSeconds(1);
+            TakeDamage(damage);
         }
+    }
+
+    private bool IsDead()
+    {
+        return currentHealth < 1;
+    }
+
+    private void DestroyIfDead()
+    {
+        if (IsDead()) Destroy(gameObject); 
     }
 }
