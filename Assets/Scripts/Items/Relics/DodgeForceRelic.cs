@@ -19,7 +19,6 @@ public class DodgeForceRelic : Relic
 
         if (targetStats != null)
         {
-            Debug.LogFormat("Adding effects of {1} stacks to {0}", targetStats, stacks);
             targetStats.DodgeForce = baseStats.DodgeForce * (Mathf.Pow(BUFF_AMOUNT, stacks));
         }
     }

@@ -34,7 +34,6 @@ public class RelicManager : MonoBehaviour
     {
         foreach (Relic relic in currentRelics.Keys)
         {
-            Debug.LogFormat("Applying {0} stacks of {1}", currentRelics[relic], relic);
             relic.ApplyRelicEffect(playerCurrentStats, currentRelics[relic]);
         }
     }

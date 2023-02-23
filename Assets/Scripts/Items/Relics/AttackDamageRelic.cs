@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackDamageRelic : Relic
 {
-    private const string NAME = "Dodge Force Relic";
+    private const string NAME = "Attack Damage Relic";
     private const float BUFF_AMOUNT = 1.0f;
 
     public AttackDamageRelic()
@@ -18,7 +18,6 @@ public class AttackDamageRelic : Relic
 
         if (targetStats != null)
         {
-            Debug.LogFormat("Adding effects of {1} stacks to {0}", targetStats, stacks);
             targetStats.AttackDamage = baseStats.AttackDamage + (BUFF_AMOUNT * stacks);
         }
     }

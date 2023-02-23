@@ -17,7 +17,6 @@ public class MoveSpeedRelic : Relic {
 
         if (targetStats != null)
         {
-            Debug.LogFormat("Adding effects of {1} stacks to {0}", targetStats, stacks);
             targetStats.MoveSpeed = baseStats.MoveSpeed + (BUFF_AMOUNT * stacks);
         }
     }
