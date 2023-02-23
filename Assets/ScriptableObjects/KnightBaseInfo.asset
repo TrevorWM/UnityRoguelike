@@ -16,8 +16,8 @@ MonoBehaviour:
   moveSpeed: 5
   dodgeForce: 1.05
   dodgeTime: 0.3
-  attacksPerSecond: 0.2
-  attackDamage: 1
+  attacksPerSecond: 1
+  attackDamage: 5
   attackRange: 4
   projectileSpeed: 30
   sprite: {fileID: 21300000, guid: 8d40168a351513149bd98d0e27b87c30, type: 3}

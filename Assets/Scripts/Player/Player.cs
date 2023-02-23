@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     
     private Rigidbody2D playerRigidbody;
     private bool isDodging = false;
+    private bool isAttacking = false;
     private Vector2 inputVector = Vector2.zero;
 
 
@@ -42,7 +43,12 @@ public class Player : MonoBehaviour
 
     private void GameplayInput_OnAttackStart()
     {
-        mainAttack.StartAbility(playerStats);
+        if (!isAttacking)
+        {
+            mainAttack.StartAbility(playerStats);
+            isAttacking = true;
+            StartCoroutine("AttackCooldown");
+        }    
     }
 
     private void GameplayInput_OnDodgeAction()
@@ -70,7 +76,6 @@ public class Player : MonoBehaviour
         }
         
     }
-
     private void HandleFaceDirection()
     {
         if (playerRigidbody.velocity.x > 0)
@@ -100,5 +105,10 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damage)
     {
         playerStats.CurrentHealth -= damage;
+    }
+    IEnumerator AttackCooldown()
+    {
+        yield return new WaitForSeconds(1 / playerStats.AttacksPerSecond);
+        isAttacking = false;
     }
 }
