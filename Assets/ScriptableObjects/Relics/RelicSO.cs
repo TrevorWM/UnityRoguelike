@@ -10,6 +10,7 @@ using UnityEditor;
 #endif
 
 [CreateAssetMenu(fileName = "NewRelic",menuName = "Items/Relic")]
+[System.Serializable]
 public class RelicSO : ScriptableObject, ICollectible
 {
     public static event Action<RelicSO> OnRelicSOCollected;
@@ -60,7 +61,6 @@ public class RelicSO : ScriptableObject, ICollectible
     private float buffValue;
     private StatToChange stat;
     private Sprite sprite;
-    private ItemRarityOutlinesSO itemRarityOutlines;
     private Ability uniqueEffectScript;
     private Material shaderMaterial;
 
@@ -74,14 +74,10 @@ public class RelicSO : ScriptableObject, ICollectible
     public Ability UniqueEffectScript { get => uniqueEffectScript; set => uniqueEffectScript = value; }
     public StatToChange Stat { get => stat; set => stat = value; }
 
-    private void OnEnable()
-    {
-        SetOutlineShader();
-    }
 
-    public virtual void ApplyRelicEffect(Stats targetStats, int stacks)
+    public virtual void ApplyRelicEffect(Stats target, int stacks)
     {
-        CheckRelicScalingType();
+        CheckRelicScalingType(target, stacks);
     }
 
     public virtual void Collect()
@@ -90,32 +86,194 @@ public class RelicSO : ScriptableObject, ICollectible
         OnRelicSOCollected?.Invoke(this);
     }
 
-    private void SetOutlineShader()
-    {
-        shaderMaterial = itemRarityOutlines.itemRarityOutlines[(int)rarity];
-    }
 
-    private void CheckRelicScalingType()
+    private void CheckRelicScalingType(Stats target, int stacks)
     {
         switch (scalingType)
         {
             case RelicScalingType.Additive:
                 Debug.Log("Additive");
+                PassiveRelicAdditiveBuff(target, stacks);
                 break;
             case RelicScalingType.Multiplicative:
                 Debug.Log("Multiplicative");
+                PassiveRelicMultiplicativeBuff(target, stacks);
                 break;
             case RelicScalingType.Logarithmic:
                 Debug.Log("Log");
+                PassiveRelicLogarithmicBuff(target, stacks);
                 break;
             case RelicScalingType.Exponential:
                 Debug.Log("Expo");
+                PassiveRelicExponentialBuff(target, stacks);
                 break;
             default:
                 Debug.Log("Did not find Scaling Type");
                 break;
 
         }
+    }
+
+    private void PassiveRelicAdditiveBuff(Stats target, int stacks)
+    {
+        if (target != null)
+        {
+            switch (stat)
+            {
+                case StatToChange.MaxHealth:
+                    target.MaxHealth = target.BaseStats.MaxHealth + (buffValue * stacks);
+                    break;
+
+                case StatToChange.MoveSpeed:
+                    target.MoveSpeed = target.BaseStats.MoveSpeed + (buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeForce:
+                    target.DodgeForce = target.BaseStats.DodgeForce + (buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeTime:
+                    target.DodgeTime = target.BaseStats.DodgeTime + (buffValue * stacks);
+                    break;
+
+                case StatToChange.AttackDamage:
+                    target.AttackDamage = target.BaseStats.AttackDamage + (buffValue * stacks);
+                    break;
+                case StatToChange.AttackRange:
+                    target.AttackRange = target.BaseStats.AttackRange + (buffValue * stacks);
+                    break;
+
+                case StatToChange.AttacksPerSecond:
+                    target.AttacksPerSecond = target.BaseStats.AttacksPerSecond + (buffValue * stacks);
+                    break;
+
+                case StatToChange.ProjectileSpeed:
+                    target.ProjectileSpeed = target.BaseStats.ProjectileSpeed + (buffValue * stacks);
+                    break;
+            }
+        }
+    }
+
+    private void PassiveRelicMultiplicativeBuff(Stats target, int stacks)
+    {
+        if (target != null)
+        {
+            switch (stat)
+            {
+                case StatToChange.MaxHealth:
+                    target.MaxHealth = target.BaseStats.MaxHealth * (buffValue * stacks);
+                    break;
+
+                case StatToChange.MoveSpeed:
+                    target.MoveSpeed = target.BaseStats.MoveSpeed * (buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeForce:
+                    target.DodgeForce = target.BaseStats.DodgeForce * (buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeTime:
+                    target.DodgeTime = target.BaseStats.DodgeTime * (buffValue * stacks);
+                    break;
+
+                case StatToChange.AttackDamage:
+                    target.AttackDamage = target.BaseStats.AttackDamage * (buffValue * stacks);
+                    break;
+                case StatToChange.AttackRange:
+                    target.AttackRange = target.BaseStats.AttackRange * (buffValue * stacks);
+                    break;
+
+                case StatToChange.AttacksPerSecond:
+                    target.AttacksPerSecond = target.BaseStats.AttacksPerSecond * (buffValue * stacks);
+                    break;
+
+                case StatToChange.ProjectileSpeed:
+                    target.ProjectileSpeed = target.BaseStats.ProjectileSpeed * (buffValue * stacks);
+                    break;
+            }
+        }
+    }
+
+    private void PassiveRelicLogarithmicBuff(Stats target, int stacks)
+    {
+        if (target != null)
+        {
+            switch (stat)
+            {
+                case StatToChange.MaxHealth:
+                    target.MaxHealth = target.BaseStats.MaxHealth + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.MoveSpeed:
+                    target.MoveSpeed = target.BaseStats.MoveSpeed + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeForce:
+                    target.DodgeForce = target.BaseStats.DodgeForce + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeTime:
+                    target.DodgeTime = target.BaseStats.DodgeTime + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.AttackDamage:
+                    target.AttackDamage = target.BaseStats.AttackDamage + Mathf.Log(buffValue * stacks);
+                    break;
+                case StatToChange.AttackRange:
+                    target.AttackRange = target.BaseStats.AttackRange + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.AttacksPerSecond:
+                    target.AttacksPerSecond = target.BaseStats.AttacksPerSecond + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.ProjectileSpeed:
+                    target.ProjectileSpeed = target.BaseStats.ProjectileSpeed + Mathf.Log(buffValue * stacks);
+                    break;  
+            }
+        }
+
+    }
+
+    private void PassiveRelicExponentialBuff(Stats target, int stacks)
+    {
+        if (target != null)
+        {
+            switch (stat)
+            {
+                case StatToChange.MaxHealth:
+                    target.MaxHealth = target.BaseStats.MaxHealth + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.MoveSpeed:
+                    target.MoveSpeed = target.BaseStats.MoveSpeed + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.DodgeForce:
+                    target.DodgeForce = target.BaseStats.DodgeForce + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.DodgeTime:
+                    target.DodgeTime = target.BaseStats.DodgeTime + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.AttackDamage:
+                    target.AttackDamage = target.BaseStats.AttackDamage + Mathf.Pow(buffValue, stacks);
+                    break;
+                case StatToChange.AttackRange:
+                    target.AttackRange = target.BaseStats.AttackRange + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.AttacksPerSecond:
+                    target.AttacksPerSecond = target.BaseStats.AttacksPerSecond + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.ProjectileSpeed:
+                    target.ProjectileSpeed = target.BaseStats.ProjectileSpeed + Mathf.Pow(buffValue, stacks);
+                    break;
+            }
+        }
+
     }
     #region Editor
 #if UNITY_EDITOR
@@ -144,8 +302,12 @@ public class RelicSO : ScriptableObject, ICollectible
             EditorGUILayout.Space();
             DrawHeader("Visual Information");
             DrawSpriteField(relic);
+            DrawShaderField(relic);
 
             EditorGUILayout.EndVertical();
+
+            EditorUtility.SetDirty(relic);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(relic);
 
         }
         private void DrawHeader(string text)
@@ -229,8 +391,16 @@ public class RelicSO : ScriptableObject, ICollectible
         private void DrawSpriteField(RelicSO relic)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Sprite", GUILayout.MaxWidth(LABEL_WIDTH));
+            EditorGUILayout.LabelField("Sprite:", GUILayout.MaxWidth(LABEL_WIDTH));
             relic.sprite = (Sprite)EditorGUILayout.ObjectField(relic.sprite, typeof(Sprite), false);
+            EditorGUILayout.EndHorizontal();
+        }
+
+        private void DrawShaderField(RelicSO relic)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Shader:", GUILayout.MaxWidth(LABEL_WIDTH));
+            relic.shaderMaterial = (Material)EditorGUILayout.ObjectField(relic.shaderMaterial, typeof(Material), false);
             EditorGUILayout.EndHorizontal();
         }
     }

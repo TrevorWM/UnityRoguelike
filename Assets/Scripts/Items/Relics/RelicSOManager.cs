@@ -5,14 +5,15 @@ using UnityEngine;
 public class RelicSOManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    private Stats playerCurrentStats;
+    private Stats playerStats;
+    
 
     private Dictionary<RelicSO, int> currentRelics = new Dictionary<RelicSO, int>();
 
     private void OnEnable()
     {
         RelicSO.OnRelicSOCollected += RelicSO_OnRelicSOCollected;
-        playerCurrentStats = player.GetComponent<Stats>();
+        playerStats = player.GetComponent<Stats>();
     }
     private void OnDisable() => RelicSO.OnRelicSOCollected -= RelicSO_OnRelicSOCollected;
 
@@ -39,7 +40,7 @@ public class RelicSOManager : MonoBehaviour
         {
             if (relic.EffectType == RelicSO.RelicEffectType.Passive)
             {
-                relic.ApplyRelicEffect(playerCurrentStats, currentRelics[relic]);
+                relic.ApplyRelicEffect(playerStats, currentRelics[relic]);
             }
 
         }

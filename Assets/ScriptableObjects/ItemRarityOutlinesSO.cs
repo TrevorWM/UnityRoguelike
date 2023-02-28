@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="NewItemRarityOutlines", menuName="Item Rarity Outlines")]
 public class ItemRarityOutlinesSO : ScriptableObject
 {
-    public Material[] itemRarityOutlines;
+    public Material[] outlines;
 }

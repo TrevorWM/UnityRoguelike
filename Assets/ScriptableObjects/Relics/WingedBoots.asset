@@ -10,6 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 517a70953bc5878458f23a9c08571874, type: 3}
-  m_Name: MoveSpeedRelic
+  m_Name: WingedBoots
   m_EditorClassIdentifier: 
-  effectType: 0

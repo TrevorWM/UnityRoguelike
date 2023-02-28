@@ -18,15 +18,13 @@ public class CharacterBaseSO : ScriptableObject
     [Header("Visual Information")]
     [SerializeField] private Sprite sprite;
 
-
-    public Sprite Sprite { get { return sprite; } }
-
-    public float MaxHealth { get => maxHealth; }
-    public float MoveSpeed { get => moveSpeed; }
-    public float DodgeForce { get => dodgeForce; }
-    public float DodgeTime { get => dodgeTime; }
-    public float AttacksPerSecond { get => attacksPerSecond; }
-    public float AttackDamage { get => attackDamage; }
-    public float AttackRange { get => attackRange; }
-    public float ProjectileSpeed { get => projectileSpeed; }
+    public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
+    public float DodgeForce { get => dodgeForce; set => dodgeForce = value; }
+    public float DodgeTime { get => dodgeTime; set => dodgeTime = value; }
+    public float AttacksPerSecond { get => attacksPerSecond; set => attacksPerSecond = value; }
+    public float AttackDamage { get => attackDamage; set => attackDamage = value; }
+    public float AttackRange { get => attackRange; set => attackRange = value; }
+    public float ProjectileSpeed { get => projectileSpeed; set => projectileSpeed = value; }
+    public Sprite Sprite { get => sprite; set => sprite = value; }
 }

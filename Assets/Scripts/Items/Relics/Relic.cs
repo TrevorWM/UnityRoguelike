@@ -13,10 +13,13 @@ public class Relic : MonoBehaviour, ICollectible
         relicSO.Collect();
     }
 
-    private void Start()
+    private void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
         spriteRenderer.sprite = relicSO.Sprite;
         spriteRenderer.material = relicSO.ShaderMaterial;
+
+        
     }
 }

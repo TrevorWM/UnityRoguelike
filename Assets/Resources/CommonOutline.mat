@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SpriteOutlineUncommon
+  m_Name: CommonOutline
   m_Shader: {fileID: -6465566751694194690, guid: 7a1e5c7cdeb9b404abf2f458454b5d78, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -53,8 +53,8 @@ Material:
     - _EnableExternalAlpha: 0
     - _OutlineThickness: 0.4
     m_Colors:
+    - OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0.050956488, g: 1, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
