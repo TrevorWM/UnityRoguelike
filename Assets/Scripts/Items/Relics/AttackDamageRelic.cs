@@ -10,15 +10,14 @@ public class AttackDamageRelic : Relic
     public AttackDamageRelic()
     {
         this.RelicName = NAME;
+        this.RelicEffectType = RelicEffectTypeEnum.Passive;
     }
 
     public override void ApplyRelicEffect(Stats targetStats, int stacks)
     {
-        CharacterBaseSO baseStats = targetStats.BaseStats;
-
         if (targetStats != null)
         {
-            targetStats.AttackDamage = baseStats.AttackDamage + (BUFF_AMOUNT * stacks);
+            targetStats.AttackDamage = targetStats.BaseStats.AttackDamage + (BUFF_AMOUNT * stacks);
         }
     }
 }

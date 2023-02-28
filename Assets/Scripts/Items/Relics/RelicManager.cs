@@ -21,20 +21,27 @@ public class RelicManager : MonoBehaviour
         GiveEntityRelic(relicType);
     }
 
-    public void GiveEntityRelic(Relic newRelic)
+    private void GiveEntityRelic(Relic newRelic)
     {
-        currentRelics.TryGetValue(newRelic, out int count);
-        currentRelics[newRelic] = count + 1;
-        Debug.LogFormat("You now have {0} {1}s", currentRelics[newRelic], newRelic.RelicName);
-
-        ApplyRelicsToEntity();
+        AddRelicToDictionary(newRelic);
+        ApplyPassiveRelicsToEntity();
     }
 
-    private void ApplyRelicsToEntity()
+    private void AddRelicToDictionary(Relic relicToAdd)
+    {
+        currentRelics.TryGetValue(relicToAdd, out int count);
+        currentRelics[relicToAdd] = count + 1;
+        Debug.LogFormat("You now have {0} {1}s", currentRelics[relicToAdd], relicToAdd.RelicName);
+    }
+    private void ApplyPassiveRelicsToEntity()
     {
         foreach (Relic relic in currentRelics.Keys)
         {
-            relic.ApplyRelicEffect(playerCurrentStats, currentRelics[relic]);
+            if (relic.RelicEffectType == Relic.RelicEffectTypeEnum.Passive)
+            {
+                relic.ApplyRelicEffect(playerCurrentStats, currentRelics[relic]);
+            }
+            
         }
     }
 

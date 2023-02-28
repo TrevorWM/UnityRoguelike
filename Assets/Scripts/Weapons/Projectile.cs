@@ -24,11 +24,11 @@ public class Projectile : MonoBehaviour, IDamager
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        IDamagable enemy = collision.GetComponent<IDamagable>();
+        IDamagable target = collision.GetComponent<IDamagable>();
 
-        if (enemy != null)
+        if (target != null)
         {
-            DealDamageTo(enemy);
+            DealDamageTo(target);
             Destroy(gameObject);
         } 
     }

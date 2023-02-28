@@ -1,17 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class KnightSword : Ability
 {
     [Header("Ability Properties")]
+    private const string NAME = "Knight Sword";
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform shootPosition;
     private Stats entityStats;
 
     private Camera cam;
+
+    public KnightSword()
+    {
+        this.AbilityName = NAME;
+    }
 
     public override void StartAbility(Stats entityStats)
     {

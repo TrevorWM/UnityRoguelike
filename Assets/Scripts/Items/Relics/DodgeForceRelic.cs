@@ -11,15 +11,14 @@ public class DodgeForceRelic : Relic
     public DodgeForceRelic()
     {
         this.RelicName = NAME;
+        this.RelicEffectType = RelicEffectTypeEnum.Passive;
     }
 
     public override void ApplyRelicEffect(Stats targetStats, int stacks)
     {
-        CharacterBaseSO baseStats = targetStats.BaseStats;
-
         if (targetStats != null)
         {
-            targetStats.DodgeForce = baseStats.DodgeForce * (Mathf.Pow(BUFF_AMOUNT, stacks));
+            targetStats.DodgeForce = targetStats.BaseStats.DodgeForce * (Mathf.Pow(BUFF_AMOUNT, stacks));
         }
     }
 }

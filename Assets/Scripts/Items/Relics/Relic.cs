@@ -5,8 +5,20 @@ using System;
 
 public abstract class Relic : MonoBehaviour, ICollectible
 {
+    public enum RelicEffectTypeEnum
+    {
+        Passive,
+        OnAttack,
+        OnTargetHit,
+        OnTargetDeath,
+        OnSelfHit,
+    }
+
     private string relicName;
+    private RelicEffectTypeEnum relicEffectType;
+
     public string RelicName { get => relicName; set => relicName = value; }
+    public RelicEffectTypeEnum RelicEffectType { get => relicEffectType; set => relicEffectType = value; }
 
     public static event Action<Relic> OnRelicCollected;
     
