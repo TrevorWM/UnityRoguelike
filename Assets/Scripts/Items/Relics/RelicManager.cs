@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RelicManager : MonoBehaviour
 {
+    /*
     [SerializeField] private GameObject player;
     private Stats playerCurrentStats;
 
@@ -44,5 +45,5 @@ public class RelicManager : MonoBehaviour
             
         }
     }
-
+    */
 }

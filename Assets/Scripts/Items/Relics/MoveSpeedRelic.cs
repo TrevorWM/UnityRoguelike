@@ -7,7 +7,7 @@ public class MoveSpeedRelic : Relic {
     private const string NAME = "Move Speed Relic";
     private const float BUFF_AMOUNT = 0.1f;
     
-    public MoveSpeedRelic()
+    /*public MoveSpeedRelic()
     {
         this.RelicName = NAME;
         this.RelicEffectType = RelicEffectTypeEnum.Passive;
@@ -20,4 +20,5 @@ public class MoveSpeedRelic : Relic {
             targetStats.MoveSpeed = targetStats.BaseStats.MoveSpeed + (BUFF_AMOUNT * stacks);
         }
     }
+    */
 }

@@ -8,6 +8,7 @@ public class DodgeForceRelic : Relic
 {
     private const string NAME = "Dodge Force Relic";
     private const float BUFF_AMOUNT = 1.05f;
+    /*
     public DodgeForceRelic()
     {
         this.RelicName = NAME;
@@ -21,4 +22,5 @@ public class DodgeForceRelic : Relic
             targetStats.DodgeForce = targetStats.BaseStats.DodgeForce * (Mathf.Pow(BUFF_AMOUNT, stacks));
         }
     }
+    */
 }

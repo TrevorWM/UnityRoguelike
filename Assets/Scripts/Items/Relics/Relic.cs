@@ -3,31 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public abstract class Relic : MonoBehaviour, ICollectible
+public class Relic : MonoBehaviour, ICollectible
 {
-    public enum RelicEffectTypeEnum
+    [SerializeField] private RelicSO relicSO;
+    private SpriteRenderer spriteRenderer;
+
+    public void Collect()
     {
-        Passive,
-        OnAttack,
-        OnTargetHit,
-        OnTargetDeath,
-        OnSelfHit,
+        relicSO.Collect();
     }
 
-    private string relicName;
-    private RelicEffectTypeEnum relicEffectType;
-
-    public string RelicName { get => relicName; set => relicName = value; }
-    public RelicEffectTypeEnum RelicEffectType { get => relicEffectType; set => relicEffectType = value; }
-
-    public static event Action<Relic> OnRelicCollected;
-    
-    public abstract void ApplyRelicEffect(Stats targetStats, int stacks);
-
-    public virtual void Collect()
+    private void Start()
     {
-        Debug.LogFormat("You collected a {0}", RelicName);
-        OnRelicCollected?.Invoke(this);
-
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer.sprite = relicSO.Sprite;
+        spriteRenderer.material = relicSO.ShaderMaterial;
     }
 }

@@ -6,7 +6,7 @@ public class AttackDamageRelic : Relic
 {
     private const string NAME = "Attack Damage Relic";
     private const float BUFF_AMOUNT = 1.0f;
-
+    /*
     public AttackDamageRelic()
     {
         this.RelicName = NAME;
@@ -20,4 +20,5 @@ public class AttackDamageRelic : Relic
             targetStats.AttackDamage = targetStats.BaseStats.AttackDamage + (BUFF_AMOUNT * stacks);
         }
     }
+    */
 }
