@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Stats : MonoBehaviour
 {
+    
+
     [SerializeField] CharacterBaseSO baseStats;
     private float maxHealth;
     private float currentHealth;
@@ -21,15 +23,15 @@ public class Stats : MonoBehaviour
 
     private void Awake()
     {
-        maxHealth = baseStats.MaxHealth;
+        maxHealth = BaseStats.MaxHealth;
         currentHealth = maxHealth;
-        moveSpeed = baseStats.MoveSpeed;
-        dodgeForce = baseStats.DodgeForce;
-        dodgeTime = baseStats.DodgeTime;
-        attacksPerSecond = baseStats.AttacksPerSecond;
-        attackDamage = baseStats.AttackDamage;
-        attackRange = baseStats.AttackRange;
-        ProjectileSpeed = baseStats.ProjectileSpeed;
+        moveSpeed = BaseStats.MoveSpeed;
+        dodgeForce = BaseStats.DodgeForce;
+        dodgeTime = BaseStats.DodgeTime;
+        attacksPerSecond = BaseStats.AttacksPerSecond;
+        attackDamage = BaseStats.AttackDamage;
+        attackRange = BaseStats.AttackRange;
+        ProjectileSpeed = BaseStats.ProjectileSpeed;
     }
 
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
@@ -41,6 +43,5 @@ public class Stats : MonoBehaviour
     public float AttackDamage { get => attackDamage; set => attackDamage = value; }
     public float AttackRange { get => attackRange; set => attackRange = value; }
     public float ProjectileSpeed { get => projectileSpeed; set => projectileSpeed = value; }
-    public CharacterBaseSO BaseStats { get => baseStats; }
-    
+    public CharacterBaseSO BaseStats { get => baseStats; set => baseStats = value; }
 }

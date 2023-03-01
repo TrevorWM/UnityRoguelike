@@ -5,16 +5,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Xml.Serialization;
 
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 [CreateAssetMenu(fileName = "NewRelic",menuName = "Items/Relic")]
-public class RelicSO : ScriptableObject, ICollectible
+[Serializable]
+public class RelicSO : ScriptableObject
 {
-    public static event Action<RelicSO> OnRelicSOCollected;
+    
 
-    public enum RelicEffectType
+    [SerializeField] public enum RelicEffectType
     {
         Passive,
         OnAttack,
@@ -22,7 +24,7 @@ public class RelicSO : ScriptableObject, ICollectible
         OnTargetHit,
         OnTargetDeath,
     }
-    public enum RelicScalingType
+    [SerializeField] public enum RelicScalingType
     {
         Additive,
         Multiplicative,
@@ -30,7 +32,7 @@ public class RelicSO : ScriptableObject, ICollectible
         Exponential,
     }
 
-    public enum RelicRarity
+    [SerializeField] public enum RelicRarity
     {
         Common,
         Uncommon,
@@ -40,7 +42,7 @@ public class RelicSO : ScriptableObject, ICollectible
         Dark,
     }
 
-    public enum StatToChange
+    [SerializeField] public enum StatToChange
     {
         MaxHealth,
         MoveSpeed,
@@ -51,18 +53,17 @@ public class RelicSO : ScriptableObject, ICollectible
         AttackRange,
         ProjectileSpeed,
     }
-    
-    private RelicEffectType effectType;
-    private string relicName;
-    private string description;
-    private RelicRarity rarity;
-    private RelicScalingType scalingType;
-    private float buffValue;
-    private StatToChange stat;
-    private Sprite sprite;
-    private ItemRarityOutlinesSO itemRarityOutlines;
-    private Ability uniqueEffectScript;
-    private Material shaderMaterial;
+
+    [SerializeField] private RelicEffectType effectType;
+    [SerializeField] private string relicName;
+    [SerializeField] private string description;
+    [SerializeField] private RelicRarity rarity;
+    [SerializeField] private RelicScalingType scalingType;
+    [SerializeField] private float buffValue;
+    [SerializeField] private StatToChange stat;
+    [SerializeField] private Sprite sprite;
+    [SerializeField] private Ability ability;
+    [SerializeField] private Material shaderMaterial;
 
     public string RelicName { get => relicName; set => relicName = value; }
     public RelicEffectType EffectType { get => effectType; set => effectType = value; }
@@ -71,45 +72,34 @@ public class RelicSO : ScriptableObject, ICollectible
     public Material ShaderMaterial { get => shaderMaterial; set => shaderMaterial = value; }
     public string Description { get => description; set => description = value; }
     public RelicRarity Rarity { get => rarity; set => rarity = value; }
-    public Ability UniqueEffectScript { get => uniqueEffectScript; set => uniqueEffectScript = value; }
+    public Ability AbilityScript { get => ability; set => ability = value; }
     public StatToChange Stat { get => stat; set => stat = value; }
 
-    private void OnEnable()
+
+    public virtual void ApplyRelicEffect(Stats target, int stacks)
     {
-        SetOutlineShader();
+        CheckRelicScalingType(target, stacks);
     }
 
-    public virtual void ApplyRelicEffect(Stats targetStats, int stacks)
-    {
-        CheckRelicScalingType();
-    }
-
-    public virtual void Collect()
-    {
-        Debug.LogFormat("You collected a {0}", RelicName);
-        OnRelicSOCollected?.Invoke(this);
-    }
-
-    private void SetOutlineShader()
-    {
-        shaderMaterial = itemRarityOutlines.itemRarityOutlines[(int)rarity];
-    }
-
-    private void CheckRelicScalingType()
+    private void CheckRelicScalingType(Stats target, int stacks)
     {
         switch (scalingType)
         {
             case RelicScalingType.Additive:
                 Debug.Log("Additive");
+                PassiveRelicAdditiveBuff(target, stacks);
                 break;
             case RelicScalingType.Multiplicative:
                 Debug.Log("Multiplicative");
+                PassiveRelicMultiplicativeBuff(target, stacks);
                 break;
             case RelicScalingType.Logarithmic:
                 Debug.Log("Log");
+                PassiveRelicLogarithmicBuff(target, stacks);
                 break;
             case RelicScalingType.Exponential:
                 Debug.Log("Expo");
+                PassiveRelicExponentialBuff(target, stacks);
                 break;
             default:
                 Debug.Log("Did not find Scaling Type");
@@ -117,35 +107,225 @@ public class RelicSO : ScriptableObject, ICollectible
 
         }
     }
+
+    private void PassiveRelicAdditiveBuff(Stats target, int stacks)
+    {
+        if (target != null)
+        {
+            switch (stat)
+            {
+                case StatToChange.MaxHealth:
+                    target.MaxHealth = target.BaseStats.MaxHealth + (buffValue * stacks);
+                    break;
+
+                case StatToChange.MoveSpeed:
+                    target.MoveSpeed = target.BaseStats.MoveSpeed + (buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeForce:
+                    target.DodgeForce = target.BaseStats.DodgeForce + (buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeTime:
+                    target.DodgeTime = target.BaseStats.DodgeTime + (buffValue * stacks);
+                    break;
+
+                case StatToChange.AttackDamage:
+                    target.AttackDamage = target.BaseStats.AttackDamage + (buffValue * stacks);
+                    break;
+                case StatToChange.AttackRange:
+                    target.AttackRange = target.BaseStats.AttackRange + (buffValue * stacks);
+                    break;
+
+                case StatToChange.AttacksPerSecond:
+                    target.AttacksPerSecond = target.BaseStats.AttacksPerSecond + (buffValue * stacks);
+                    break;
+
+                case StatToChange.ProjectileSpeed:
+                    target.ProjectileSpeed = target.BaseStats.ProjectileSpeed + (buffValue * stacks);
+                    break;
+            }
+        }
+    }
+
+    private void PassiveRelicMultiplicativeBuff(Stats target, int stacks)
+    {
+        if (target != null)
+        {
+            switch (stat)
+            {
+                case StatToChange.MaxHealth:
+                    target.MaxHealth = target.BaseStats.MaxHealth * (buffValue * stacks);
+                    break;
+
+                case StatToChange.MoveSpeed:
+                    target.MoveSpeed = target.BaseStats.MoveSpeed * (buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeForce:
+                    target.DodgeForce = target.BaseStats.DodgeForce * (buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeTime:
+                    target.DodgeTime = target.BaseStats.DodgeTime * (buffValue * stacks);
+                    break;
+
+                case StatToChange.AttackDamage:
+                    target.AttackDamage = target.BaseStats.AttackDamage * (buffValue * stacks);
+                    break;
+                case StatToChange.AttackRange:
+                    target.AttackRange = target.BaseStats.AttackRange * (buffValue * stacks);
+                    break;
+
+                case StatToChange.AttacksPerSecond:
+                    target.AttacksPerSecond = target.BaseStats.AttacksPerSecond * (buffValue * stacks);
+                    break;
+
+                case StatToChange.ProjectileSpeed:
+                    target.ProjectileSpeed = target.BaseStats.ProjectileSpeed * (buffValue * stacks);
+                    break;
+            }
+        }
+    }
+
+    private void PassiveRelicLogarithmicBuff(Stats target, int stacks)
+    {
+        if (target != null)
+        {
+            switch (stat)
+            {
+                case StatToChange.MaxHealth:
+                    target.MaxHealth = target.BaseStats.MaxHealth + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.MoveSpeed:
+                    target.MoveSpeed = target.BaseStats.MoveSpeed + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeForce:
+                    target.DodgeForce = target.BaseStats.DodgeForce + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.DodgeTime:
+                    target.DodgeTime = target.BaseStats.DodgeTime + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.AttackDamage:
+                    target.AttackDamage = target.BaseStats.AttackDamage + Mathf.Log(buffValue * stacks);
+                    break;
+                case StatToChange.AttackRange:
+                    target.AttackRange = target.BaseStats.AttackRange + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.AttacksPerSecond:
+                    target.AttacksPerSecond = target.BaseStats.AttacksPerSecond + Mathf.Log(buffValue * stacks);
+                    break;
+
+                case StatToChange.ProjectileSpeed:
+                    target.ProjectileSpeed = target.BaseStats.ProjectileSpeed + Mathf.Log(buffValue * stacks);
+                    break;  
+            }
+        }
+
+    }
+
+    private void PassiveRelicExponentialBuff(Stats target, int stacks)
+    {
+        if (target != null)
+        {
+            switch (stat)
+            {
+                case StatToChange.MaxHealth:
+                    target.MaxHealth = target.BaseStats.MaxHealth + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.MoveSpeed:
+                    target.MoveSpeed = target.BaseStats.MoveSpeed + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.DodgeForce:
+                    target.DodgeForce = target.BaseStats.DodgeForce + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.DodgeTime:
+                    target.DodgeTime = target.BaseStats.DodgeTime + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.AttackDamage:
+                    target.AttackDamage = target.BaseStats.AttackDamage + Mathf.Pow(buffValue, stacks);
+                    break;
+                case StatToChange.AttackRange:
+                    target.AttackRange = target.BaseStats.AttackRange + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.AttacksPerSecond:
+                    target.AttacksPerSecond = target.BaseStats.AttacksPerSecond + Mathf.Pow(buffValue, stacks);
+                    break;
+
+                case StatToChange.ProjectileSpeed:
+                    target.ProjectileSpeed = target.BaseStats.ProjectileSpeed + Mathf.Pow(buffValue, stacks);
+                    break;
+            }
+        }
+
+    }
+    
     #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(RelicSO))]
+    [CanEditMultipleObjects]
     public class RelicSOEditor : Editor
     {
+        SerializedProperty relicNameSP;
+        SerializedProperty relicDescriptionSP;
+        SerializedProperty relicRaritySP;
+        SerializedProperty relicEffectTypeSP;
+        SerializedProperty relicBuffValueSP;
+        SerializedProperty relicScalingTypeSP;        
+        SerializedProperty relicStatSP;
+        SerializedProperty relicAbilitySP;
+        SerializedProperty relicSpriteSP;
+        SerializedProperty relicShaderSP;
+
         private const int LABEL_WIDTH = 100;
+
+        private void OnEnable()
+        {
+            relicNameSP = serializedObject.FindProperty("relicName");
+            relicDescriptionSP = serializedObject.FindProperty("description");
+            relicRaritySP = serializedObject.FindProperty("rarity");
+            relicEffectTypeSP = serializedObject.FindProperty("effectType");
+            relicBuffValueSP = serializedObject.FindProperty("buffValue");
+            relicScalingTypeSP = serializedObject.FindProperty("scalingType");
+            relicStatSP = serializedObject.FindProperty("stat");
+            relicAbilitySP = serializedObject.FindProperty("ability");
+            relicSpriteSP = serializedObject.FindProperty("sprite");
+            relicShaderSP = serializedObject.FindProperty("shaderMaterial");
+        }
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
-
             RelicSO relic = (RelicSO)target;
-            
 
-            EditorGUILayout.Space();
             EditorGUILayout.BeginVertical();
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
             DrawHeader("Relic Details");
             
             EditorGUI.indentLevel = 1;
-            DrawRelicNameField(relic);
-            DrawRelicDescriptionField(relic);
-            DrawRelicRarityField(relic);
-            DrawRelicTypeField(relic);
+            DrawRelicNameField();
+            DrawRelicDescriptionField();
+            DrawRelicRarityField();
+            DrawRelicTypeField();
             DrawRelicTypeInfo(relic);
 
             EditorGUILayout.Space();
             DrawHeader("Visual Information");
-            DrawSpriteField(relic);
+            DrawSpriteField();
+            DrawShaderField();
 
             EditorGUILayout.EndVertical();
+
+            serializedObject.ApplyModifiedProperties();
 
         }
         private void DrawHeader(string text)
@@ -154,86 +334,84 @@ public class RelicSO : ScriptableObject, ICollectible
             GUILayout.Label(text, EditorStyles.boldLabel);
             GUILayout.EndHorizontal();
         }
-        private void DrawRelicNameField(RelicSO relic)
+        private void DrawRelicNameField()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Name:", GUILayout.MaxWidth(LABEL_WIDTH));
-            relic.relicName = EditorGUILayout.TextField(relic.relicName, GUILayout.Width(200));
+            EditorGUILayout.PropertyField(relicNameSP, new GUIContent("Name:"));
             EditorGUILayout.EndHorizontal();
         }
 
-        private void DrawRelicDescriptionField(RelicSO relic)
+        private void DrawRelicDescriptionField()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Description:", GUILayout.MaxWidth(LABEL_WIDTH));
-            relic.description = EditorGUILayout.TextArea(relic.description);
+            EditorGUILayout.PropertyField(relicDescriptionSP, new GUIContent("Description:"));
             EditorGUILayout.EndHorizontal();
         }
 
-        private void DrawRelicRarityField(RelicSO relic)
+        private void DrawRelicRarityField()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Rarity:", GUILayout.MaxWidth(LABEL_WIDTH));
-            relic.rarity = (RelicRarity)EditorGUILayout.EnumPopup(relic.rarity);
+            EditorGUILayout.PropertyField(relicRaritySP, new GUIContent("Rarity:"));
             EditorGUILayout.EndHorizontal();
         }
 
-        private void DrawRelicTypeField(RelicSO relic)
+        private void DrawRelicTypeField()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Type:", GUILayout.MaxWidth(LABEL_WIDTH));
-            relic.effectType = (RelicEffectType)EditorGUILayout.EnumPopup(relic.effectType);
+            EditorGUILayout.PropertyField(relicEffectTypeSP, new GUIContent("Type:"));
             EditorGUILayout.EndHorizontal();
         }
         private void DrawRelicTypeInfo(RelicSO relic)
         {
             EditorGUI.indentLevel++;
-            if (relic.effectType == RelicEffectType.Passive)
+            if (relic.EffectType == RelicEffectType.Passive)
             {
-                DrawPassiveFields(relic);
-                relic.uniqueEffectScript = null;
+                DrawPassiveFields();
             } else
             {
-                DrawActiveFields(relic);
-                relic.buffValue = 0;
+                DrawActiveFields();
             }
             EditorGUI.indentLevel--;
         }
 
-        private void DrawPassiveFields(RelicSO relic)
+        private void DrawPassiveFields()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Modify Stat:", GUILayout.MaxWidth(LABEL_WIDTH));
-            relic.stat = (StatToChange)EditorGUILayout.EnumPopup(relic.stat);
+            EditorGUILayout.PropertyField(relicStatSP, new GUIContent("Modify Stat:"));
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Buff Value:", GUILayout.MaxWidth(LABEL_WIDTH));
-            relic.buffValue = EditorGUILayout.FloatField(relic.buffValue);
+            EditorGUILayout.PropertyField(relicBuffValueSP, new GUIContent("Buff Amount:"));
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Type:", GUILayout.MaxWidth(LABEL_WIDTH));
-            relic.scalingType = (RelicScalingType)EditorGUILayout.EnumPopup(relic.scalingType);
+            EditorGUILayout.PropertyField(relicScalingTypeSP, new GUIContent("Scale Type:"));
             EditorGUILayout.EndHorizontal();
         }
 
-        private void DrawActiveFields(RelicSO relic)
+        private void DrawActiveFields()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Abilities:", GUILayout.MaxWidth(LABEL_WIDTH));
-            relic.UniqueEffectScript = (Ability)EditorGUILayout.ObjectField(relic.UniqueEffectScript, typeof(Ability), false);
+            EditorGUILayout.PropertyField(relicAbilitySP, new GUIContent("Ability Script:"));
             EditorGUILayout.EndHorizontal();
         }
 
-        private void DrawSpriteField(RelicSO relic)
+        private void DrawSpriteField()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Sprite", GUILayout.MaxWidth(LABEL_WIDTH));
-            relic.sprite = (Sprite)EditorGUILayout.ObjectField(relic.sprite, typeof(Sprite), false);
+            EditorGUILayout.PropertyField(relicSpriteSP, new GUIContent("Sprite:"));
+            EditorGUILayout.EndHorizontal();
+        }
+
+        private void DrawShaderField()
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PropertyField(relicShaderSP, new GUIContent("Shader:"));
             EditorGUILayout.EndHorizontal();
         }
     }
 #endif
     #endregion
+    
 }
+
