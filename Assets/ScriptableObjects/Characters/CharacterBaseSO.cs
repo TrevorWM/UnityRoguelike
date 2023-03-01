@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static RelicSO;
 
 [CreateAssetMenu(menuName ="Data/CharacterStats")]
 public class CharacterBaseSO : ScriptableObject

@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class RelicManager : MonoBehaviour
 {
-    /*
     [SerializeField] private GameObject player;
-    private Stats playerCurrentStats;
+    private Stats playerStats;
+    
 
-    private Dictionary<Relic, int> currentRelics = new Dictionary<Relic, int>();
+    private Dictionary<RelicSO, int> currentRelics = new Dictionary<RelicSO, int>();
 
     private void OnEnable()
-    { 
+    {
         Relic.OnRelicCollected += Relic_OnRelicCollected;
-        playerCurrentStats = player.GetComponent<Stats>();
+        playerStats = player.GetComponent<Stats>();
     }
     private void OnDisable() => Relic.OnRelicCollected -= Relic_OnRelicCollected;
 
-    private void Relic_OnRelicCollected(Relic relicType)
+    private void Relic_OnRelicCollected(RelicSO relic)
     {
-        GiveEntityRelic(relicType);
+        GiveEntityRelic(relic);
     }
 
-    private void GiveEntityRelic(Relic newRelic)
+    private void GiveEntityRelic(RelicSO newRelic)
     {
         AddRelicToDictionary(newRelic);
         ApplyPassiveRelicsToEntity();
     }
 
-    private void AddRelicToDictionary(Relic relicToAdd)
+    private void AddRelicToDictionary(RelicSO relicToAdd)
     {
         currentRelics.TryGetValue(relicToAdd, out int count);
         currentRelics[relicToAdd] = count + 1;
@@ -36,14 +36,13 @@ public class RelicManager : MonoBehaviour
     }
     private void ApplyPassiveRelicsToEntity()
     {
-        foreach (Relic relic in currentRelics.Keys)
+        foreach (RelicSO relic in currentRelics.Keys)
         {
-            if (relic.RelicEffectType == Relic.RelicEffectTypeEnum.Passive)
+            if (relic.EffectType == RelicSO.RelicEffectType.Passive)
             {
-                relic.ApplyRelicEffect(playerCurrentStats, currentRelics[relic]);
+                relic.ApplyRelicEffect(playerStats, currentRelics[relic]);
             }
-            
+
         }
     }
-    */
 }
