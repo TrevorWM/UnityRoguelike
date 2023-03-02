@@ -8,6 +8,7 @@ public class FindClosestEnemy : MonoBehaviour
 
     private Transform nearestEnemy;
     private int enemyLayer;
+    private Transform lastTarget = null;
 
     private void Start()
     {
@@ -33,14 +34,11 @@ public class FindClosestEnemy : MonoBehaviour
             }
         }
         
-        if (nearestEnemy != null)
+        if (nearestEnemy != null && nearestEnemy != lastTarget)
         {
             Debug.Log("Nearest Enemy: " + nearestEnemy + "; Distance: " + minimumDistance);
         }
-        else
-        {
-            Debug.Log("There is no enemy in the given radius");
-        }
+        
         
     }
 

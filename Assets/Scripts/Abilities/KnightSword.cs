@@ -22,13 +22,16 @@ public class KnightSword : Ability
     {
         this.entityStats = entityStats;
         StartCoroutine("AttackTimer");
+        Debug.Log("Starting Ability");
     }
     public override void StopAbility()
     {
         StopCoroutine("AttackTimer");
+        Debug.Log("Stopping Ability");
     }
     private void Attack()
     {
+        
         cam = Camera.main;
 
         Vector2 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
@@ -40,15 +43,21 @@ public class KnightSword : Ability
 
         GameObject projectile = Instantiate(projectilePrefab, shootPositionVector, shootPosition.rotation);
         projectile.GetComponent<Projectile>().Setup(lookDirection, entityStats.ProjectileSpeed, entityStats.AttackRange, entityStats.AttackDamage);
+        
 
     }
-    IEnumerator AttackTimer()
+    IEnumerator Cooldown()
     {
         while (true)
         {
             Attack();
             yield return new WaitForSeconds(1 / entityStats.AttacksPerSecond);
         }
+
+    }
+
+    private void CreateProjectile()
+    {
 
     }
 }
