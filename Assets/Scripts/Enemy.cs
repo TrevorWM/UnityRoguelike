@@ -11,6 +11,11 @@ public class Enemy : MonoBehaviour, IDamagable {
     [Header("Movement Values")]
     [SerializeField] public float moveSpeed = 5.0f;
 
+    public void Awake()
+    {
+        int layer = LayerMask.NameToLayer("Enemies");
+        this.gameObject.layer = layer;
+    }
 
     public void TakeDamage(float damage)
     {

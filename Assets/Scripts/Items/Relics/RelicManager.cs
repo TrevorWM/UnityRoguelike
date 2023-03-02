@@ -15,7 +15,10 @@ public class RelicManager : MonoBehaviour
         Relic.OnRelicCollected += Relic_OnRelicCollected;
         playerStats = player.GetComponent<Stats>();
     }
-    private void OnDisable() => Relic.OnRelicCollected -= Relic_OnRelicCollected;
+    private void OnDisable()
+    {
+        Relic.OnRelicCollected -= Relic_OnRelicCollected;
+    }
 
     private void Relic_OnRelicCollected(RelicSO relic)
     {

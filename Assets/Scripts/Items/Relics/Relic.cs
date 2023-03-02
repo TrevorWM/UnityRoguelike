@@ -24,10 +24,12 @@ public class Relic : MonoBehaviour, ICollectible
     private void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-
         spriteRenderer.sprite = relicSO.Sprite;
         spriteRenderer.material = relicSO.ShaderMaterial;
+    }
 
+    public virtual void ApplyRelicEffect(Stats target, int stacks)
+    {
         
     }
 }

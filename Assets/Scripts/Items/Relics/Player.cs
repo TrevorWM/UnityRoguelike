@@ -12,8 +12,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D playerRigidbody;
     private bool isDodging = false;
     private bool isAttacking = false;
+    public bool autoAim = false;
     private Vector2 inputVector = Vector2.zero;
-
 
     private void Start()
     {
@@ -27,12 +27,10 @@ public class Player : MonoBehaviour
         GameplayInput.OnAttackEnd += GameplayInput_OnAttackEnd;
     }
 
- 
-
     private void OnDestroy()
     {
         GameplayInput.OnDodgeAction -= GameplayInput_OnDodgeAction;
-        GameplayInput.OnAttackStart-= GameplayInput_OnAttackStart;
+        GameplayInput.OnAttackStart -= GameplayInput_OnAttackStart;
         GameplayInput.OnAttackEnd -= GameplayInput_OnAttackEnd;
     }
 
@@ -43,7 +41,7 @@ public class Player : MonoBehaviour
 
     private void GameplayInput_OnAttackStart()
     {
-        if (!isAttacking)
+        if (!isAttacking && !autoAim)
         {
             mainAttack.StartAbility(playerStats);
             isAttacking = true;
@@ -67,7 +65,6 @@ public class Player : MonoBehaviour
         HandleMoveCharacter();
         HandleFaceDirection();
     }
-
     private void HandleMoveCharacter()
     {
         if (!isDodging)
