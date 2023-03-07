@@ -4,48 +4,76 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class AbilityWithProjectile : Ability
+public class AbilityWithProjectile : MonoBehaviour, IAbility
 {
-    [SerializeField] Projectile projectilePrefab;
-    private ObjectPool<Projectile> projectilePool;
+    [SerializeField] AbilitySO abilitySO;
+    protected ObjectPool<Projectile> projectilePool;
 
+    [SerializeField] protected ShootPositionHelper shootPositionHelper;
+    private Stats entityStats;
     public void Awake()
     {
-        projectilePool = new ObjectPool<Projectile>(CreateProjectile, TakeProjectileFromPool, ReturnProjectileToPool);
+        projectilePool = new ObjectPool<Projectile>(CreateProjectile,TakeProjectileFromPool,ReturnProjectileToPool, DestroyPoolObject, maxSize: 100);
     }
+
     protected Projectile CreateProjectile()
     {
-        Projectile projectile = Instantiate(projectilePrefab);
+        Projectile projectile = Instantiate(abilitySO.ProjectilePrefab);
+        
         return projectile;
     } 
 
     protected void TakeProjectileFromPool(Projectile projectile)
     {
         projectile.gameObject.SetActive(true);
-        //GetShootDirection();
+        projectile.transform.position = shootPositionHelper.GetShootPosition();
+        projectile.transform.rotation = shootPositionHelper.GetShootRotation();
     }
 
     protected void ReturnProjectileToPool(Projectile projectile)
     {
         projectile.gameObject.SetActive(false);
+
     }
-    /*
-     * TODO: Figure this thing out again to be less dependent on other stuff.
-     * 
-    public void SetShootDirection(Vector2 targetPosition, Vector2 shootFromPosition)
+
+    protected void DestroyPoolObject(Projectile projectile)
     {
-
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        
-
-        Vector2 lookDirection = (mousePosition - shootFromPosition).normalized;
-
-        float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-
-        shootFromPosition.rotation = Quaternion.Euler(0, 0, angle);
-
-        GameObject projectile = Instantiate(projectilePrefab, shootPositionVector, shootPosition.rotation);
-        projectile.GetComponent<Projectile>().Setup(lookDirection);
+        Destroy(projectile.gameObject);
     }
-    */
+
+    public void StartAbility(Stats entityStats)
+    {
+        this.entityStats = entityStats;
+        StartCoroutine("IAbility.Cooldown");
+        Debug.Log("Starting Ability");
+    }
+    public void StopAbility()
+    {
+        StopCoroutine("IAbility.Cooldown");
+        Debug.Log("Stopping Ability");
+    }
+    private void Attack()
+    {
+        Projectile projectile = projectilePool.Get();
+        Vector2 shootDirection = shootPositionHelper.GetShootDirection();
+
+       projectile.FireProjectile(shootDirection, abilitySO.ProjectileSpeed, abilitySO.ProjectileRange, abilitySO.ProjectileDamage);
+        StartCoroutine(ReleaseObjectAfterTime(projectile));
+    }
+
+    IEnumerator IAbility.Cooldown()
+    {
+        while (true)
+        {
+            Attack();
+            yield return new WaitForSeconds(1 / entityStats.AttacksPerSecond);
+        }
+    }
+
+    private IEnumerator ReleaseObjectAfterTime(Projectile projectile)
+    {
+        yield return new WaitForSeconds(abilitySO.ProjectileRange);
+        projectilePool.Release(projectile);
+
+    }
 }

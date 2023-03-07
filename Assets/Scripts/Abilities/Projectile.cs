@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -8,13 +9,18 @@ public class Projectile : MonoBehaviour, IDamager
     private Vector3 shootDirection;
     private float projectileSpeed;
     private float damage;
+    private float aliveTime;
 
-    public void Setup(Vector3 shootDirection, float projectileSpeed, float projectileAliveTime, float damage)
+    private void Awake()
+    {
+        
+    }
+    public void FireProjectile(Vector2 shootDirection, float projectileSpeed, float projectileAliveTime, float damage)
     {
         this.shootDirection = shootDirection;
         this.projectileSpeed = projectileSpeed;
         this.damage = damage;
-        Destroy(gameObject, projectileAliveTime);
+        this.aliveTime = projectileAliveTime;
     }
 
     private void Update()
