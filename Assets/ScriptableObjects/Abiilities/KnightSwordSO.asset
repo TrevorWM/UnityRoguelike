@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e95ff74d7b3a8442aa0a899f5976d3e, type: 3}
   m_Name: KnightSwordSO
   m_EditorClassIdentifier: 
-  abilityName: 
-  projectileSpeed: 0
-  projectileRange: 0
-  projectileDamage: 0
+  abilityName: Knight Sword
+  projectileSpeed: 5
+  projectileRange: 3
+  projectileDamage: 10
+  projectilePrefab: {fileID: 1812622885979544142, guid: a0491238758f6f94788b45931aa28df3, type: 3}
