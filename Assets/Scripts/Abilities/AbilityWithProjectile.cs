@@ -45,19 +45,17 @@ public class AbilityWithProjectile : MonoBehaviour, IAbility
     {
         this.entityStats = entityStats;
         StartCoroutine("IAbility.Cooldown");
-        Debug.Log("Starting Ability");
     }
     public void StopAbility()
     {
         StopCoroutine("IAbility.Cooldown");
-        Debug.Log("Stopping Ability");
     }
     private void Attack()
     {
         Projectile projectile = projectilePool.Get();
         Vector2 shootDirection = shootPositionHelper.GetShootDirection();
 
-       projectile.FireProjectile(shootDirection, abilitySO.ProjectileSpeed, abilitySO.ProjectileRange, abilitySO.ProjectileDamage);
+        projectile.FireProjectile(shootDirection, abilitySO.ProjectileSpeed, abilitySO.ProjectileRange, abilitySO.ProjectileDamage);
         StartCoroutine(ReleaseObjectAfterTime(projectile));
     }
 

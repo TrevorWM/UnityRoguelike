@@ -26146,8 +26146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59939a3fb0dffae4b852d85b1e20ef72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1812622885979544142, guid: a0491238758f6f94788b45931aa28df3, type: 3}
-  abilitySO: {fileID: 0}
+  abilitySO: {fileID: 11400000, guid: d2d31963d70b5b247b8684dcd79858b1, type: 2}
   shootPositionHelper: {fileID: 457033747}
 --- !u!1 &1510612894
 GameObject:

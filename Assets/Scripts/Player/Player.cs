@@ -1,11 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private IAbility mainAttack;
+    [SerializeField] private IAbility[] abilities;
     private GameplayInput gameplayInput;
     private Stats playerStats;
     
@@ -20,7 +18,7 @@ public class Player : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerStats = GetComponent<Stats>();
         gameplayInput = GetComponent<GameplayInput>();
-        mainAttack = GetComponent<IAbility>();
+        abilities= GetComponents<IAbility>();
 
         GameplayInput.OnDodgeAction += GameplayInput_OnDodgeAction;
         GameplayInput.OnAttackStart += GameplayInput_OnAttackStart;
@@ -36,14 +34,14 @@ public class Player : MonoBehaviour
 
     private void GameplayInput_OnAttackEnd()
     {
-        mainAttack.StopAbility();
+        abilities[0].StopAbility();
     }
 
     private void GameplayInput_OnAttackStart()
     {
         if (!isAttacking && !autoAim)
         {
-            mainAttack.StartAbility(playerStats);
+            abilities[0].StartAbility(playerStats);
             isAttacking = true;
             StartCoroutine("AttackCooldown");
         }    
