@@ -25448,7 +25448,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!58 &293208766
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -25631,6 +25631,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   target: {fileID: 1355666608}
+--- !u!1 &457033744 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 351543679997364784, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+  m_PrefabInstance: {fileID: 351543680777751873}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &457033745 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 351543679997364787, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+  m_PrefabInstance: {fileID: 351543680777751873}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &457033747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457033744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9308c5752d13ace4cb24407acc04a76a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootPosTransform: {fileID: 457033745}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -26097,6 +26120,35 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 351543679422781934, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
   m_PrefabInstance: {fileID: 351543680777751873}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1355666609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355666600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db193f33a5db15141b97109ed9bed1b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1355666608}
+  overlapRadius: 10
+--- !u!114 &1355666617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355666600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59939a3fb0dffae4b852d85b1e20ef72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1812622885979544142, guid: a0491238758f6f94788b45931aa28df3, type: 3}
+  abilitySO: {fileID: 0}
+  shootPositionHelper: {fileID: 457033747}
 --- !u!1 &1510612894
 GameObject:
   m_ObjectHideFlags: 0
@@ -26611,6 +26663,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 351543679997364787, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351543679997364787, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1356479326118736437, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+      propertyPath: shootPosition
+      value: 
+      objectReference: {fileID: 457033747}
+    - target: {fileID: 1356479326118736437, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+      propertyPath: projectileRange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1356479326118736437, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+      propertyPath: projectileSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1356479326118736437, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+      propertyPath: projectileDamage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1356479326118736437, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 1812622885979544142, guid: a0491238758f6f94788b45931aa28df3, type: 3}
+    - target: {fileID: 1356479326118736437, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+      propertyPath: shootPositionHelper
+      value: 
+      objectReference: {fileID: 457033747}
     - target: {fileID: 1461366143183420642, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -26620,6 +26704,7 @@ PrefabInstance:
     - {fileID: 351543678900413901, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
     - {fileID: 7154181658609255538, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
     - {fileID: 351543678900413903, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+    - {fileID: 1356479326118736437, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
 --- !u!1001 &667583493817581467
 PrefabInstance:
