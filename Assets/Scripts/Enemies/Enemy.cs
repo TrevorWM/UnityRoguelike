@@ -11,25 +11,27 @@ public class Enemy : MonoBehaviour, IDamagable {
     [Header("Movement Values")]
     [SerializeField] public float moveSpeed = 5.0f;
 
+    public float damage = 2f;
+
     public void Awake()
     {
         int layer = LayerMask.NameToLayer("Enemies");
         this.gameObject.layer = layer;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damageToTake)
     {
-        currentHealth -= damage;
-        Debug.LogFormat("Took {0} damage", damage);
+        currentHealth -= damageToTake;
+        Debug.LogFormat("Took {0} damage", damageToTake);
         DestroyIfDead();
     }
 
-    public void TakeDamageOverSeconds(float damage, float seconds)
+    public void TakeDamageOverSeconds(float damageToTake, float seconds)
     {
         throw new System.NotImplementedException();
     }
 
-    private IEnumerator DamageOverSeconds(float damage, float seconds)
+    private IEnumerator DamageOverSeconds(float damageToTake, float seconds)
     {
         for (int i = 0; i < seconds; i++)
         {

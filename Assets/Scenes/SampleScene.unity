@@ -25442,13 +25442,14 @@ GameObject:
   - component: {fileID: 293208771}
   - component: {fileID: 293208770}
   - component: {fileID: 293208772}
+  - component: {fileID: 293208773}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!58 &293208766
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -25464,7 +25465,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.54295397
 --- !u!212 &293208767
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -25547,6 +25548,7 @@ MonoBehaviour:
   maxHealth: 10
   currentHealth: 10
   moveSpeed: 5
+  damage: 2
 --- !u!114 &293208770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25560,7 +25562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 5
-  radius: 0.5
+  radius: 0.3
   height: 2
   canMove: 1
   maxSpeed: 4
@@ -25631,6 +25633,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   target: {fileID: 1355666608}
+--- !u!114 &293208773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293208765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804b011ed89d4964489dd19e1d652aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 293208769}
 --- !u!1 &457033744 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 351543679997364784, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
@@ -26953,6 +26968,10 @@ PrefabInstance:
     - target: {fileID: 351543679422781929, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 351543679422781929, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 351543679422781934, guid: 01693cf067a25c44d8db44fa0b4d6650, type: 3}
       propertyPath: m_RootOrder
