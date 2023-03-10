@@ -11,10 +11,7 @@ public class Projectile : MonoBehaviour, IDamager
     private float damage;
     private float aliveTime;
 
-    private void Awake()
-    {
-        
-    }
+    
     public void FireProjectile(Vector2 shootDirection, float projectileSpeed, float projectileAliveTime, float damage)
     {
         this.shootDirection = shootDirection;
@@ -35,7 +32,7 @@ public class Projectile : MonoBehaviour, IDamager
         if (target != null)
         {
             DealDamageTo(target);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         } 
     }
 

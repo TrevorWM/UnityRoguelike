@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Action<float, float> OnPlayerDamaged;
+
     [SerializeField] private IAbility[] abilities;
     private GameplayInput gameplayInput;
     private Stats playerStats;
@@ -100,10 +103,16 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damage)
     {
         playerStats.CurrentHealth -= damage;
+        OnPlayerDamaged?.Invoke(playerStats.MaxHealth, playerStats.CurrentHealth);
     }
     IEnumerator AttackCooldown()
     {
         yield return new WaitForSeconds(1 / playerStats.AttacksPerSecond);
         isAttacking = false;
+    }
+
+    public void TakeDamageOverSeconds(float damage, float seconds)
+    {
+        throw new NotImplementedException();
     }
 }
