@@ -15,5 +15,5 @@ MonoBehaviour:
   abilityName: Knight Sword
   projectileSpeed: 5
   projectileRange: 3
-  projectileDamage: 10
+  projectileDamage: 1
   projectilePrefab: {fileID: 1812622885979544142, guid: a0491238758f6f94788b45931aa28df3, type: 3}

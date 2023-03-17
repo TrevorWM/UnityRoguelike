@@ -37,6 +37,7 @@ public class FindClosestEnemy : MonoBehaviour
         if (nearestEnemy != null && nearestEnemy != lastTarget)
         {
             Debug.Log("Nearest Enemy: " + nearestEnemy + "; Distance: " + minimumDistance);
+            lastTarget = nearestEnemy;
         }
         
         

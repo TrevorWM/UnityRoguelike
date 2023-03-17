@@ -1,13 +1,17 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamagable
 {
+    public static Action<float, float> OnPlayerDamaged;
+
     [SerializeField] private IAbility[] abilities;
     private GameplayInput gameplayInput;
     private Stats playerStats;
     
     private Rigidbody2D playerRigidbody;
+    private SpriteRenderer playerSpriteRenderer;
     private bool isDodging = false;
     private bool isAttacking = false;
     public bool autoAim = false;
@@ -18,6 +22,7 @@ public class Player : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerStats = GetComponent<Stats>();
         gameplayInput = GetComponent<GameplayInput>();
+        playerSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         abilities= GetComponents<IAbility>();
 
         GameplayInput.OnDodgeAction += GameplayInput_OnDodgeAction;
@@ -75,12 +80,12 @@ public class Player : MonoBehaviour
     {
         if (playerRigidbody.velocity.x > 0)
         {
-            playerRigidbody.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            playerSpriteRenderer.flipX= false;
 
         }
         else if (playerRigidbody.velocity.x < 0)
         {
-            playerRigidbody.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+            playerSpriteRenderer.flipX = true;
         }
     }
 
@@ -100,10 +105,16 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damage)
     {
         playerStats.CurrentHealth -= damage;
+        OnPlayerDamaged?.Invoke(playerStats.MaxHealth, playerStats.CurrentHealth);
     }
     IEnumerator AttackCooldown()
     {
         yield return new WaitForSeconds(1 / playerStats.AttacksPerSecond);
         isAttacking = false;
+    }
+
+    public void TakeDamageOverSeconds(float damage, float seconds)
+    {
+        throw new NotImplementedException();
     }
 }

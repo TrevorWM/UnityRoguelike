@@ -6,15 +6,13 @@ using UnityEngine.Rendering;
 
 public class Projectile : MonoBehaviour, IDamager
 {
+    private const int PLAYER_LAYER = 7;
     private Vector3 shootDirection;
     private float projectileSpeed;
     private float damage;
     private float aliveTime;
 
-    private void Awake()
-    {
-        
-    }
+    
     public void FireProjectile(Vector2 shootDirection, float projectileSpeed, float projectileAliveTime, float damage)
     {
         this.shootDirection = shootDirection;
@@ -30,12 +28,14 @@ public class Projectile : MonoBehaviour, IDamager
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        IDamagable target = collision.GetComponent<IDamagable>();
+        
 
-        if (target != null)
+        if (collision.gameObject.layer != PLAYER_LAYER)
         {
+            IDamagable target = collision.GetComponent<IDamagable>();
+
             DealDamageTo(target);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         } 
     }
 
