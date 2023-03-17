@@ -26283,6 +26283,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1355666600}
+--- !u!1 &1759985421 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1594873486733757146, guid: 52f26b81c182a8941ad5e83a1d1acdd9, type: 3}
+  m_PrefabInstance: {fileID: 1594873485970640299}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1759985424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759985421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db193f33a5db15141b97109ed9bed1b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1773740584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26800,6 +26817,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -1.1
       objectReference: {fileID: 0}
+    - target: {fileID: 1594873486151894456, guid: 52f26b81c182a8941ad5e83a1d1acdd9, type: 3}
+      propertyPath: autoAimOn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594873486151894456, guid: 52f26b81c182a8941ad5e83a1d1acdd9, type: 3}
+      propertyPath: autoAimScript
+      value: 
+      objectReference: {fileID: 1759985424}
     - target: {fileID: 1594873486160516629, guid: 52f26b81c182a8941ad5e83a1d1acdd9, type: 3}
       propertyPath: m_Sprite
       value: 

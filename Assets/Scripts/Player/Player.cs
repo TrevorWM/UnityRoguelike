@@ -67,6 +67,7 @@ public class Player : MonoBehaviour, IDamagable
         inputVector = gameplayInput.GetMovementVectorNormalized();
         HandleMoveCharacter();
         HandleFaceDirection();
+
     }
     private void HandleMoveCharacter()
     {

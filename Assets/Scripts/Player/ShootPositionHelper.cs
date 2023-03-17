@@ -6,17 +6,13 @@ using UnityEngine;
 public class ShootPositionHelper : MonoBehaviour
 {
     [SerializeField] Transform shootPosTransform;
+    [SerializeField] FindClosestEnemy autoAimScript;
     private Vector2 lookDirection;
+    public bool autoAimOn;
 
     void Update()
     {
-        Vector2 currentPosition = new Vector2(shootPosTransform.position.x, shootPosTransform.position.y);
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lookDirection = (mousePosition - currentPosition).normalized;
-
-        float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-
-        shootPosTransform.rotation = Quaternion.Euler(0, 0, angle);
+        CalculateShootDirection();
     }
 
     public Vector3 GetShootPosition()
@@ -32,5 +28,32 @@ public class ShootPositionHelper : MonoBehaviour
     public Quaternion GetShootRotation()
     {
         return shootPosTransform.rotation;
+    }
+
+    private void CalculateShootDirection()
+    {
+        Vector2 currentPosition = new Vector2(shootPosTransform.position.x, shootPosTransform.position.y);
+
+        if (autoAimOn)
+        {
+            Transform enemyTransform = autoAimScript.GetEnemyTransform();
+            
+            if (enemyTransform != null)
+            {
+                Vector2 enemyPosition = new Vector2(enemyTransform.position.x, enemyTransform.position.y);
+                lookDirection = (enemyPosition - currentPosition).normalized;
+            }
+            
+        }
+        else
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            lookDirection = (mousePosition - currentPosition).normalized;
+        }
+
+
+        float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+
+        shootPosTransform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }
