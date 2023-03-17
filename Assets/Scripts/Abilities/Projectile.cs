@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour, IDamager
         this.shootDirection = shootDirection;
         this.projectileSpeed = projectileSpeed;
         this.damage = damage;
-        this.aliveTime = projectileAliveTime;
+        aliveTime = projectileAliveTime;
     }
 
     private void Update()
@@ -28,8 +28,6 @@ public class Projectile : MonoBehaviour, IDamager
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-
         if (collision.gameObject.layer != PLAYER_LAYER)
         {
             IDamagable target = collision.GetComponent<IDamagable>();

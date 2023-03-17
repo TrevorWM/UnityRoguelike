@@ -36,9 +36,7 @@ public class FindClosestEnemy : MonoBehaviour
         {
             Debug.Log("Nearest Enemy: " + nearestEnemy + "; Distance: " + minimumDistance);
             lastTarget = nearestEnemy;
-        }
-        
-        
+        } 
     }
 
     public Transform GetEnemyTransform()

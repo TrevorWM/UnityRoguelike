@@ -11,6 +11,8 @@ public class AbilityWithProjectile : MonoBehaviour, IAbility
 
     [SerializeField] protected ShootPositionHelper shootPositionHelper;
     private Stats entityStats;
+    WaitForSeconds projectileTimeout = new WaitForSeconds(10);
+    
     public void Awake()
     {
         projectilePool = new ObjectPool<Projectile>(CreateProjectile,TakeProjectileFromPool,ReturnProjectileToPool, DestroyPoolObject, maxSize: 100);
@@ -18,7 +20,7 @@ public class AbilityWithProjectile : MonoBehaviour, IAbility
 
     protected Projectile CreateProjectile()
     {
-        Projectile projectile = Instantiate(abilitySO.ProjectilePrefab);
+        Projectile projectile = Instantiate(abilitySO.projectilePrefab);
         
         return projectile;
     } 
@@ -26,8 +28,7 @@ public class AbilityWithProjectile : MonoBehaviour, IAbility
     protected void TakeProjectileFromPool(Projectile projectile)
     {
         projectile.gameObject.SetActive(true);
-        projectile.transform.position = shootPositionHelper.GetShootPosition();
-        projectile.transform.rotation = shootPositionHelper.GetShootRotation();
+
     }
 
     protected void ReturnProjectileToPool(Projectile projectile)
@@ -40,7 +41,7 @@ public class AbilityWithProjectile : MonoBehaviour, IAbility
     {
         Destroy(projectile.gameObject);
     }
-
+    
     public void StartAbility(Stats entityStats)
     {
         this.entityStats = entityStats;
@@ -53,9 +54,11 @@ public class AbilityWithProjectile : MonoBehaviour, IAbility
     private void Attack()
     {
         Projectile projectile = projectilePool.Get();
+        projectile.transform.position = shootPositionHelper.GetShootPosition();
+        projectile.transform.rotation = shootPositionHelper.GetShootRotation();
         Vector2 shootDirection = shootPositionHelper.GetShootDirection();
 
-        projectile.FireProjectile(shootDirection, abilitySO.ProjectileSpeed, abilitySO.ProjectileRange, abilitySO.ProjectileDamage);
+        projectile.FireProjectile(shootDirection, abilitySO.projectileSpeed, abilitySO.projectileRange, abilitySO.projectileDamage);
         StartCoroutine(ReleaseObjectAfterTime(projectile));
     }
 
@@ -70,8 +73,7 @@ public class AbilityWithProjectile : MonoBehaviour, IAbility
 
     private IEnumerator ReleaseObjectAfterTime(Projectile projectile)
     {
-        yield return new WaitForSeconds(abilitySO.ProjectileRange);
+        yield return projectileTimeout;
         projectilePool.Release(projectile);
-
     }
 }
