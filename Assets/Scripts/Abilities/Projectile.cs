@@ -33,9 +33,12 @@ public class Projectile : MonoBehaviour, IDamager
         if (collision.gameObject.layer != PLAYER_LAYER)
         {
             IDamagable target = collision.GetComponent<IDamagable>();
-
-            DealDamageTo(target);
-            gameObject.SetActive(false);
+            if (target != null)
+            {
+                DealDamageTo(target);
+                gameObject.SetActive(false);
+            }
+            
         } 
     }
 
